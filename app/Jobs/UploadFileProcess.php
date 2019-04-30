@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Enums\ResourceSubtypes;
+use App\Http\Services\FileService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -42,5 +44,10 @@ class UploadFileProcess implements ShouldQueue
     {
         Storage::put($this->path, base64_decode($this->content));
         // todo implement upload to cloud storage
+
+        if ($this->subtype === ResourceSubtypes::VIDEO) {
+            $fileService = new FileService();
+            $fileService->convertVideo($this->fileModel);
+        }
     }
 }

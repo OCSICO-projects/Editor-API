@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Events\PreviewGenerated;
 use App\Http\Services\Previews\PreviewUploadedFactory;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -46,6 +47,7 @@ class GeneratePreviewProcess implements ShouldQueue
 
         if ($previewModel) {
             $previewFactory->updateResourcePreview($this->resourceModel, $previewModel);
+            event(new PreviewGenerated($previewModel));
         }
     }
 }

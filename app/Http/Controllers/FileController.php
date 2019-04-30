@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\VideoStream;
 use App\Http\Resources\FileResource;
 use App\Http\Services\FileService;
 use App\Models\File;
@@ -82,6 +83,12 @@ class FileController extends Controller
      */
     public function data(File $file)
     {
-        return Storage::response($file->path);
+        $filePath = storage_path('app/' . config('filesystems.default') . $file->path);
+        if ($file->media_type === 'video/mp4') {
+            $stream = new VideoStream($filePath);
+            $stream->start();
+        } else {
+            return Storage::response($file->path);
+        }
     }
 }

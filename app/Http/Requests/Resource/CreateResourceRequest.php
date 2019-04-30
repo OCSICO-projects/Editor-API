@@ -47,7 +47,8 @@ class CreateResourceRequest extends FormRequest
             ],
             'content' => 'json|nullable',
             'url' => 'url|nullable|required_if:subtype,' . ResourceSubtypes::YOUTUBE,
-            'thumbnail' => 'nullable|required_if:subtype,' . ResourceSubtypes::SLIDE,
+            // TODO: add '|required_if:subtype,' . ResourceSubtypes::SLIDE' when thumbnail generation on frontend will be fixed
+            'thumbnail' => 'nullable',
             'relates' => 'array|required_if:file_id,null',
             'relates.*' => 'distinct|exists:resources,id'
         ];

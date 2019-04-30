@@ -37,6 +37,7 @@ return [
             'X-Auth-Token',
             'Origin',
             'Authorization',
+            'X-Socket-ID'
         ],
 
         'expose_headers' => [

@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Enums\ResourceSubtypes;
 use App\Enums\ResourceTypes;
 use App\Http\Services\Previews\PreviewFactory;
+use App\Jobs\ConvertVideoProcess;
 use App\Jobs\GeneratePreviewProcess;
 use App\Jobs\UploadFileProcess;
 use App\Models\File;
@@ -49,13 +50,22 @@ class FileService
     }
 
     /**
-     * @param $fileModel
-     * @param $resource
+     * @param File $fileModel
+     * @param Resource $resource
      */
-    public function generatePreview($fileModel, $resource)
+    public function generatePreview(File $fileModel, Resource $resource)
     {
         GeneratePreviewProcess::dispatch($this->file->get(), $fileModel, $this->subtype, $resource);
     }
+
+    /**
+     * @param File $fileModel
+     */
+    public function convertVideo(File $fileModel)
+    {
+        ConvertVideoProcess::dispatch($fileModel);
+    }
+
 
     /**
      * @param Resource $resource
